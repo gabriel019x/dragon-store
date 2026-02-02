@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DRAGON STORE</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .chat-container {
+      width: 100%;
+      max-width: 420px;
+      height: 100vh;
+      background: #0f0f0f;
+      overflow: hidden;
+      position: relative;
+    }
+    .header {
+      background: #075e54;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #128c7e;
+      color: white;
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
+    }
+    .name-container {
+      flex: 1;
+    }
+    .name {
+      font-size: 17px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .verified {
+      color: #53bdeb;
+      font-size: 20px;
+    }
+    .status {
+      font-size: 12px;
+      color: #e0f7fa;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .typing {
+      font-size: 12px;
+      color: #e0f7fa;
+      font-style: italic;
+      animation: typingAnim 1.5s infinite;
+      display: none;
+    }
+    @keyframes typingAnim {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    .online-dot {
+      width: 10px;
+      height: 10px;
+      background: #00ff00;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .messages {
+      padding: 20px 12px;
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+      background: url('https://i.imgur.com/zSLNuY2.png') repeat;
+      background-size: cover;
+      background-position: center;
+    }
+    .date {
+      text-align: center;
+      color: #aaa;
+      font-size: 12px;
+      margin: 10px 0;
+      background: rgba(0,0,0,0.6);
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+    .message {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    .user {
+      justify-content: flex-end;
+    }
+    .user .bubble {
+      background: #25d366;
+      color: white;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    .bot .bubble {
+      background: #ffffff;
+      color: #000;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    .system .bubble {
+      background: #202c33;
+      color: #ddd;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 13px;
+      box-shadow: none;
+    }
+    .bubble {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      line-height: 1.4;
+      position: relative;
+    }
+    .time {
+      font-size: 10px;
+      color: #888;
+      display: block;
+      margin-top: 4px;
+      text-align: right;
+    }
+    .user .time {
+      color: #fff;
+    }
+    .bot .time {
+      color: #333;
+    }
+    .buttons-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 12px;
+      margin-top: 10px;
+      justify-content: space-between;
+    }
+    .centered-button-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 8px;
+      padding: 0 12px;
+    }
+    .btn {
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      flex: 1 1 45%;
+      min-width: 140px;
+      text-align: center;
+      white-space: nowrap;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .btn.centered {
+      flex: 0 0 auto;
+      min-width: 180px;
+      max-width: 220px;
+    }
+    .btn:hover { background: #128c7e; }
+    .video-container {
+      width: 100%;
+      max-width: 300px;
+      margin: 10px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .price-img {
+      width: 100%;
+      max-width: 360px;
+      margin: 12px 0;
+      border-radius: 12px;
+      border: 2px solid #25d366;
+      box-shadow: 0 4px 12px rgba(37,211,102,0.3);
+    }
+    .final-message {
+      text-align: center;
+      margin: 20px 0;
+      padding: 15px;
+      background: #202c33;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .final-btn {
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="header">
+      <img src="https://i.imgur.com/zguvCAj.png" alt="Dragon Store" class="avatar">
+      <div class="name-container">
+        <div class="name">DRAGON STORE <span class="verified">✓</span></div>
+        <div class="status">
+          <span class="online-dot"></span> online
+          <span class="typing" id="typingIndicator">Digitando...</span>
+        </div>
+      </div>
+    </div>
+    <div class="messages" id="messages"></div>
+  </div>
+
+  <!-- Som leve de gota caindo (igual ao que toca no vídeo que você mandou, sem voz) -->
+  <audio id="receiveSound" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-drip-drop-141.mp3"></audio>
+  <audio id="sendSound" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-single-water-drop-140.mp3"></audio>
+
+  <script>
+    const messagesContainer = document.getElementById('messages');
+    const typingIndicator = document.getElementById('typingIndicator');
+    const receiveAudio = document.getElementById('receiveSound');
+    const sendAudio = document.getElementById('sendSound');
+    let selectedDevice = '';
+    let selectedType = '';
+
+    function showTyping() {
+      typingIndicator.style.display = 'inline';
+    }
+
+    function hideTyping() {
+      typingIndicator.style.display = 'none';
+    }
+
+    async function addMessage(content, type = 'bot') {
+      if (type === 'bot' || type === 'system') showTyping();
+      await new Promise(resolve => setTimeout(resolve, type === 'bot' ? 1800 : 0));
+      hideTyping();
+      const div = document.createElement('div');
+      div.classList.add('message', type === 'user' ? 'user' : type);
+      div.innerHTML = `
+        <div class="bubble">${content}</div>
+        <span class="time">${new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}</span>
+      `;
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      (type === 'user' ? sendAudio : receiveAudio).play().catch(() => {});
+    }
+
+    function addButtons(options, callback, isCentered = false) {
+      const container = document.createElement('div');
+      container.classList.add('buttons-row');
+      if (isCentered) container.classList.add('centered-button-row');
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.classList.add('btn');
+        if (isCentered) btn.classList.add('centered');
+        btn.innerHTML = opt.emoji ? opt.emoji + ' ' + opt.label : opt.label;
+        btn.onclick = () => {
+          document.querySelectorAll('.buttons-row, .centered-button-row').forEach(el => el.remove());
+          addMessage(opt.emoji ? opt.emoji + ' ' + opt.label : opt.label, 'user');
+          setTimeout(() => callback(opt.value), 800);
+        };
+        container.appendChild(btn);
+      });
+      messagesContainer.appendChild(container);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    async function addVideo(url) {
+      await addMessage('Enviando vídeo demonstrativo... aguarde um momento 👇', 'bot');
+      const div = document.createElement('div');
+      div.classList.add('video-container');
+      div.innerHTML = `<iframe width="100%" height="200" src="${url}" frameborder="0" allowfullscreen></iframe>`;
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      receiveAudio.play().catch(() => {});
+    }
+
+    async function addPriceImage(src) {
+      await addMessage('Aqui está a tabela de preços 🔥', 'bot');
+      const img = document.createElement('img');
+      img.src = src;
+      img.classList.add('price-img');
+      img.alt = 'Tabela de Preços';
+      messagesContainer.appendChild(img);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      receiveAudio.play().catch(() => {});
+    }
+
+    async function addFinalMessage() {
+      await addMessage('Pronto! Agora é só efetuar o pagamento e enviar o comprovante.', 'bot');
+      const div = document.createElement('div');
+      div.classList.add('final-message');
+      div.innerHTML = `
+        <p>POS O PAGAMENTO ENVIE SEU COMPROVANTE AQUI PARA RECEBER SEU PRODUTO</p>
+        <button class="final-btn" onclick="window.open('https://tinyurl.com/2pd45mda', '_blank')">MANDE AQUI</button>
+      `;
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      receiveAudio.play().catch(() => {});
+    }
+
+    // Fluxo inicial
+    (async () => {
+      const dateDiv = document.createElement('div');
+      dateDiv.classList.add('date');
+      dateDiv.textContent = 'Hoje';
+      messagesContainer.appendChild(dateDiv);
+
+      await addMessage('Essa empresa usa uma Conta Comercial verificada pela meta', 'system');
+      await addMessage('🏆 PARABÉNS! Você está entre os 100 primeiros que garantiram seu cupom de desconto na compra do XIT VIP! 🔥');
+      await addMessage('Para resgatar seu cupom, basta selecionar abaixo qual é o seu dispositivo:');
+
+      addButtons([
+        { label: 'ANDROID', value: 'android' },
+        { label: 'iOS', value: 'ios' },
+        { label: 'EMULADOR', value: 'emulador' }
+      ], async (value) => {
+        selectedDevice = value;
+        if (value === 'android') {
+          await addMessage('PARA ANDROID TEMOS');
+
+          addButtons([
+            { label: 'XIT FULL VERMELHO', value: 'full_vermelho', emoji: '✅' },
+            { label: 'XIT 97% INJECTO', value: '97_injecto', emoji: '✅' }
+          ], async (subValue) => {
+            selectedType = subValue;
+            await showDemo();
+          }, false);
+
+          setTimeout(async () => {
+            addButtons([
+              { label: 'PAINEL PRO', value: 'painel_pro', emoji: '✅' }
+            ], async (subValue) => {
+              selectedType = subValue;
+              await showDemo();
+            }, true);
+          }, 300);
+        } else {
+          await showDemo();
+        }
+      });
+    })();
+
+    async function showDemo() {
+      await addMessage('✅ Seu CUPOM foi resgatado com sucesso!');
+      await addMessage('Agora, vou te enviar um vídeo demonstrativo. Assiste com atenção para ver o produto na prática! 👇');
+
+      let videoId = '';
+      let isPainelPro = selectedType === 'painel_pro';
+
+      if (selectedDevice === 'android') {
+        if (isPainelPro) videoId = 'xLcW1SzRzgA';
+        else if (selectedType === 'full_vermelho') videoId = 'Puflh_pO9vM';
+        else videoId = '0vmmlMg94Qw';
+      } else if (selectedDevice === 'ios') {
+        videoId = 'Puflh_pO9vM';
+      } else {
+        videoId = 'hB31OUbT0bA';
+      }
+
+      await addVideo(`https://www.youtube.com/embed/${videoId}`);
+
+      await addMessage('E aí, gostou? Ficou interessado? Se sim, é só clicar no botão abaixo para conferir os valores. 👇');
+      addButtons([{ label: 'VALORES', value: 'valores', emoji: '🔥' }], async () => await showValues());
+    }
+
+    async function showValues() {
+      let imgSrc = '';
+      let isPainelPro = selectedType === 'painel_pro';
+
+      if (selectedDevice === 'android') {
+        if (isPainelPro) {
+          imgSrc = 'https://i.imgur.com/H3eaKbD.png';
+        } else {
+          imgSrc = 'https://i.imgur.com/6uIlUdx.png';
+        }
+      } else if (selectedDevice === 'ios') {
+        imgSrc = 'https://i.imgur.com/SeX9OM7.png';
+      } else {
+        imgSrc = 'https://i.imgur.com/LZ3HIjG.png';
+      }
+
+      await addPriceImage(imgSrc);
+
+      const callback = async (value) => {
+        if (value === 'feedbacks') {
+          window.open('https://www.instagram.com/dragonstorex/', '_blank');
+          await addMessage('Feedbacks abertos! Quer prosseguir pro pagamento?');
+          addButtons([
+            { label: 'PAGAMENTO', value: 'pagamento', emoji: '💳' },
+            { label: 'FEEDBACKS', value: 'feedbacks', emoji: '⭐' }
+          ], callback);
+        } else {
+          let paymentUrl = '';
+          if (selectedDevice === 'android') {
+            if (isPainelPro) {
+              paymentUrl = 'https://pay.cakto.com.br/343ftef_743392';
+            } else {
+              paymentUrl = 'https://pay.cakto.com.br/36srbor_680293';
+            }
+          } else if (selectedDevice === 'ios') {
+            paymentUrl = 'https://pay.cakto.com.br/ja5aga2_680285';
+          } else {
+            paymentUrl = 'https://pay.cakto.com.br/enqgu9n_680275';
+          }
+          window.open(paymentUrl, '_blank');
+          await addFinalMessage();
+        }
+      };
+
+      addButtons([
+        { label: 'PAGAMENTO', value: 'pagamento', emoji: '💳' },
+        { label: 'FEEDBACKS', value: 'feedbacks', emoji: '⭐' }
+      ], callback);
+    }
+  </script>
+</body>
+</html>
