@@ -229,7 +229,6 @@
     <div class="messages" id="messages"></div>
   </div>
 
-  <!-- Som leve de gota caindo (igual ao que toca no vídeo que você mandou, sem voz) -->
   <audio id="receiveSound" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-drip-drop-141.mp3"></audio>
   <audio id="sendSound" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-single-water-drop-140.mp3"></audio>
 
@@ -318,7 +317,6 @@
       receiveAudio.play().catch(() => {});
     }
 
-    // Fluxo inicial
     (async () => {
       const dateDiv = document.createElement('div');
       dateDiv.classList.add('date');
@@ -368,13 +366,13 @@
       let isPainelPro = selectedType === 'painel_pro';
 
       if (selectedDevice === 'android') {
-        if (isPainelPro) videoId = 'xLcW1SzRzgA';
-        else if (selectedType === 'full_vermelho') videoId = 'Puflh_pO9vM';
-        else videoId = '0vmmlMg94Qw';
+        if (isPainelPro) videoId = '659fRKM2CkE';
+        else if (selectedType === 'full_vermelho') videoId = '52dx1JR6zYw';
+        else videoId = 'VpxMMf2rPpo';
       } else if (selectedDevice === 'ios') {
-        videoId = 'Puflh_pO9vM';
+        videoId = 'VpxMMf2rPpo';
       } else {
-        videoId = 'hB31OUbT0bA';
+        videoId = 'xuTTdVt2gS0';
       }
 
       await addVideo(`https://www.youtube.com/embed/${videoId}`);
