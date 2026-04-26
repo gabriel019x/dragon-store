@@ -370,7 +370,7 @@
         else if (selectedType === 'full_vermelho') videoId = '52dx1JR6zYw';
         else videoId = 'VpxMMf2rPpo';
       } else if (selectedDevice === 'ios') {
-        videoId = 'VpxMMf2rPpo';
+        videoId = '52dx1JR6zYw'; // 🔥 ALTERADO AQUI
       } else {
         videoId = 'xuTTdVt2gS0';
       }
@@ -400,29 +400,20 @@
       await addPriceImage(imgSrc);
 
       const callback = async (value) => {
-        if (value === 'feedbacks') {
-          window.open('https://www.instagram.com/dragonstorex/', '_blank');
-          await addMessage('Feedbacks abertos! Quer prosseguir pro pagamento?');
-          addButtons([
-            { label: 'PAGAMENTO', value: 'pagamento', emoji: '💳' },
-            { label: 'FEEDBACKS', value: 'feedbacks', emoji: '⭐' }
-          ], callback);
-        } else {
-          let paymentUrl = '';
-          if (selectedDevice === 'android') {
-            if (isPainelPro) {
-              paymentUrl = 'https://pay.cakto.com.br/343ftef_743392';
-            } else {
-              paymentUrl = 'https://pay.cakto.com.br/36srbor_680293';
-            }
-          } else if (selectedDevice === 'ios') {
-            paymentUrl = 'https://pay.cakto.com.br/ja5aga2_680285';
+        let paymentUrl = '';
+        if (selectedDevice === 'android') {
+          if (isPainelPro) {
+            paymentUrl = 'https://pay.cakto.com.br/343ftef_743392';
           } else {
-            paymentUrl = 'https://pay.cakto.com.br/enqgu9n_680275';
+            paymentUrl = 'https://pay.cakto.com.br/36srbor_680293';
           }
-          window.open(paymentUrl, '_blank');
-          await addFinalMessage();
+        } else if (selectedDevice === 'ios') {
+          paymentUrl = 'https://pay.cakto.com.br/ja5aga2_680285';
+        } else {
+          paymentUrl = 'https://pay.cakto.com.br/enqgu9n_680275';
         }
+        window.open(paymentUrl, '_blank');
+        await addFinalMessage();
       };
 
       addButtons([
